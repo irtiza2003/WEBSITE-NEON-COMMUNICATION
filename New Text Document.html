@@ -109,7 +109,7 @@
     }
 
     .nav-links a {
-      color: var(--text-muted);
+      color: #ffffff;
       text-decoration: none;
       font-weight: 600;
       font-size: 0.8rem;
@@ -157,13 +157,19 @@
       font-size: 0.85rem;
       font-weight: 700;
       letter-spacing: 4px;
-      color: var(--text-muted);
+      color: #ffffff;
       text-transform: uppercase;
       margin-bottom: 20px;
     }
 
-    .hero-top-tag span.lime { color: var(--neon-lime); }
-    .hero-top-tag span.teal { color: var(--neon-teal); }
+    .lime-text,
+.teal-text {
+  background: linear-gradient(90deg, #b8f000 0%, #3bf072 45%, #00e5c9 80%, #00e5ff 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  filter: drop-shadow(0 0 10px rgba(0, 229, 201, 0.35));
+  display: inline-block;
+}
 
     .portal-logo {
       max-width: 140px;
@@ -201,55 +207,184 @@
       transform: scale(1.05);
     }
 
+    /* ================= JOINT VENTURE BADGE ================= */
+.joint-venture-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0 25px 0;
+}
+
+.jv-label {
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.jv-label::before,
+.jv-label::after {
+  content: '';
+  width: 35px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--neon-teal));
+}
+
+.jv-label::after {
+  background: linear-gradient(90deg, var(--neon-teal), transparent);
+}
+
+.jv-partners {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.jv-partner-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px;
+  background: rgba(10, 20, 24, 0.7);
+  border: 1px solid var(--bg-card-border);
+  border-radius: 30px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.jv-partner-card:hover {
+  border-color: var(--neon-lime);
+  box-shadow: 0 0 15px var(--neon-lime-glow);
+  transform: translateY(-2px);
+}
+
+/* Icon / image placeholder */
+.jv-icon-box {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(0, 229, 255, 0.1);
+  border: 1px solid var(--neon-teal);
+  color: var(--neon-teal);
+  font-size: 0.8rem;
+  overflow: hidden;
+}
+
+.jv-icon-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.jv-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.jv-divider {
+  color: var(--neon-lime);
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
+   /* ================= HERO GRID & COUNTDOWN REFINED ================= */
     .hero-grid {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
       width: 100%;
-      max-width: 1000px;
-      margin-top: 20px;
+      max-width: 1100px;
+      margin-top: 35px;
+      gap: 50px; /* Expands spacing between texts and the countdown box */
     }
 
-    .hero-side { text-align: left; }
-    .hero-side.right { text-align: right; }
+    .hero-side {
+      flex: 1;
+      text-align: right; /* Left text aligns toward the countdown */
+    }
+
+    .hero-side.right {
+      text-align: left; /* Right text aligns toward the countdown */
+    }
 
     .hero-side h5 {
       font-size: 0.8rem;
-      letter-spacing: 3px;
-      color: var(--text-muted);
+      letter-spacing: 4px;
+      color: #ffffff;
       text-transform: uppercase;
+      margin-bottom: 6px;
+      opacity: 0.85;
     }
 
     .hero-side h3 {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: 800;
-      letter-spacing: 2px;
+      letter-spacing: 2.5px;
       text-transform: uppercase;
+      white-space: nowrap;
     }
-
-    .lime-text { color: var(--neon-lime); text-shadow: 0 0 10px var(--neon-lime-glow); }
-    .teal-text { color: var(--neon-teal); text-shadow: 0 0 10px var(--neon-teal-glow); }
 
     .countdown-container {
       display: flex;
-      gap: 20px;
-      background: var(--bg-card);
-      padding: 15px 30px;
-      border-radius: 50px;
-      border: 1px solid var(--bg-card-border);
+      align-items: center;
+      gap: 15px;
+      background: rgba(8, 16, 20, 0.8);
+      padding: 16px 32px;
+      border-radius: 60px;
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      box-shadow: 0 0 25px rgba(0, 229, 255, 0.12), inset 0 0 15px rgba(0, 229, 255, 0.05);
+      backdrop-filter: blur(12px);
+      flex-shrink: 0;
     }
 
-    .count-box { text-align: center; }
-    .count-number {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: var(--neon-lime);
+    .count-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 55px;
+      position: relative;
     }
+
+    /* Elegant divider between countdown numbers */
+    .count-box:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: -8px;
+      top: 20%;
+      height: 60%;
+      width: 1px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .count-number {
+      font-size: 2rem;
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--neon-lime);
+      text-shadow: 0 0 12px var(--neon-lime-glow);
+      font-variant-numeric: tabular-nums;
+    }
+
     .count-label {
       font-size: 0.65rem;
+      font-weight: 700;
       letter-spacing: 2px;
-      color: var(--text-muted);
+      color: #ffffff;
+      opacity: 0.75;
       text-transform: uppercase;
+      margin-top: 4px;
     }
 
     .btn-group {
@@ -415,6 +550,149 @@
       color: var(--text-muted);
       font-size: 0.85rem;
       line-height: 1.6;
+    }
+
+    /* ================= SUNSET JOURNEY STYLING ================= */
+    #sunset-journey {
+      padding: 90px 8%;
+      position: relative;
+      z-index: 10;
+      text-align: center;
+    }
+
+    #sunset-journey .section-title h4 {
+      font-size: 0.85rem;
+      letter-spacing: 4px;
+      color: var(--neon-teal);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    #sunset-journey .section-title h2 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-top: 5px;
+  background: linear-gradient(90deg, #b8f000 0%, #3bf072 45%, #00e5c9 80%, #00e5ff 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  filter: drop-shadow(0 0 10px rgba(0, 229, 201, 0.35));
+  display: inline-block;
+}
+   .coming-soon-tag {
+  display: inline-block;
+  margin: 25px auto 0 auto; /* Places it cleanly underneath with top spacing */
+  font-size: 1.1rem; /* Larger, readable size */
+  font-weight: 800;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--neon-lime);
+  border: 2px solid var(--neon-lime);
+  padding: 12px 36px; /* Generous pill padding */
+  border-radius: 40px;
+  background: rgba(204, 255, 0, 0.05);
+  box-shadow: 0 0 20px var(--neon-lime-glow);
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+}
+
+.coming-soon-tag:hover {
+  background: rgba(204, 255, 0, 0.15);
+  box-shadow: 0 0 30px var(--neon-lime-glow);
+  transform: translateY(-2px);
+}
+
+
+    /* ================= SUNSET JOURNEY TEASER ================= */
+    .sunset-teaser-section {
+      padding: 90px 8%;
+      position: relative;
+      z-index: 10;
+      text-align: center;
+    }
+
+    .sunset-teaser-box {
+      background: radial-gradient(circle at 50% 0%, rgba(255, 94, 0, 0.15), rgba(10, 20, 24, 0.85) 70%);
+      border: 1px solid rgba(255, 120, 0, 0.35);
+      box-shadow: 0 0 35px rgba(255, 90, 0, 0.12), inset 0 0 20px rgba(255, 120, 0, 0.05);
+      border-radius: 28px;
+      padding: 60px 40px;
+      max-width: 950px;
+      margin: 0 auto;
+      backdrop-filter: blur(16px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sunset-teaser-box::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 450px;
+      height: 250px;
+      background: radial-gradient(ellipse, rgba(255, 120, 0, 0.4), transparent 70%);
+      filter: blur(60px);
+      pointer-events: none;
+    }
+
+    .sunset-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 18px;
+      background: rgba(255, 106, 0, 0.12);
+      border: 1px solid rgba(255, 120, 0, 0.5);
+      border-radius: 20px;
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #ff9d5c;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .sunset-tag i {
+      color: #ff7800;
+    }
+
+    .sunset-title {
+      font-size: 2.6rem;
+      font-weight: 900;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+      background: linear-gradient(90deg, #ffcc00 0%, #ff5e00 50%, #00e5ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 15px rgba(255, 94, 0, 0.3));
+    }
+
+    .sunset-subtext {
+      color: #ffffff;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.9;
+      max-width: 650px;
+      margin: 0 auto 30px auto;
+      line-height: 1.6;
+    }
+
+    .sunset-badge {
+      display: inline-block;
+      border: 1px dashed var(--neon-lime);
+      color: var(--neon-lime);
+      padding: 10px 28px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      box-shadow: 0 0 15px var(--neon-lime-glow);
     }
 
     /* ================= GALLERY ================= */
@@ -752,12 +1030,37 @@
       Experience <span class="lime">•</span> Connect <span class="teal">•</span> Celebrate
     </div>
 
-    <div class="hero-portal">
+   <div class="hero-portal">
       <img src="Opening Logo-01.png" alt="NEON Logo" class="portal-logo">
       <div class="hero-sublogo-container">
         <img src="Opening Logo-02.png" alt="Secondary Brand Logo" class="sub-logo">
       </div>
-    </div>
+
+     <!-- JOINT VENTURE BADGE -->
+      <div class="joint-venture-wrapper">
+        <span class="jv-label">A Joint Venture Of</span>
+        <div class="jv-partners">
+          <!-- Excellence 360 -->
+          <div class="jv-partner-card">
+            <div class="jv-icon-box">
+              <!-- When ready, replace the <i> icon with: <img src="excellence360-logo.png" alt="Excellence 360"> -->
+              <i class="fa-solid fa-gem"></i>
+            </div>
+            <span class="jv-name">Excellence 360</span>
+          </div>
+
+          <span class="jv-divider">&bull;</span>
+
+          <!-- Truffle Events -->
+          <div class="jv-partner-card">
+            <div class="jv-icon-box">
+              <!-- When ready, replace the <i> icon with: <img src="truffle-events-logo.png" alt="Truffle Events"> -->
+              <i class="fa-solid fa-champagne-glasses"></i>
+            </div>
+            <span class="jv-name">Truffle Events</span>
+          </div>
+        </div>
+      </div>
 
     <div class="hero-grid">
       <div class="hero-side">
@@ -848,6 +1151,43 @@
         <i class="fa-solid fa-vr-cardboard service-icon"></i>
         <h3>Digital Media</h3>
         <p>Interactive 3D visuals, real-time stage graphics, and immersive digital content production.</p>
+      </div>
+
+      <!-- New Card 1 -->
+      <div class="service-card">
+        <i class="fa-solid fa-sliders service-icon" style="color: var(--neon-teal);"></i>
+        <h3>Audio Engineering</h3>
+        <p>High-fidelity spatial audio mastering, live concert acoustic mapping, and club sound system calibration.</p>
+      </div>
+
+      <!-- New Card 2 -->
+      <div class="service-card">
+        <i class="fa-solid fa-lightbulb service-icon"></i>
+        <h3>Stage & Lighting Design</h3>
+        <p>Bespoke kinetic laser systems, programmed DMX lighting rigs, and architectural ambient installations.</p>
+      </div>
+
+      <!-- New Card 3 -->
+      <div class="service-card">
+        <i class="fa-solid fa-users-gear service-icon" style="color: var(--neon-teal);"></i>
+        <h3>Artist Management</h3>
+        <p>Global talent curation, live touring operations, backstage logistics, and electronic music artist relations.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUNSET JOURNEY TEASER SEGMENT -->
+  <section class="sunset-teaser-section" id="sunset-journey">
+    <div class="sunset-teaser-box">
+      <div class="sunset-tag">
+        <i class="fa-solid fa-sun"></i> Upcoming Event Experience
+      </div>
+      <h2 class="sunset-title">The Sunset Journey</h2>
+      <p class="sunset-subtext">
+        An immersive open-air twilight odyssey merging hypnotic soundscapes, sunset light synthesis, and deep electronic rhythms.
+      </p>
+      <div class="sunset-badge">
+        <i class="fa-regular fa-clock"></i> Coming Soon • Stay Tuned
       </div>
     </div>
   </section>
