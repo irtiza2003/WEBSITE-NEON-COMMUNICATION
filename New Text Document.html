@@ -9,27 +9,34 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
     :root {
       --bg-dark: #030708;
-      --bg-card: rgba(10, 20, 24, 0.75);
-      --bg-card-border: rgba(0, 229, 255, 0.15);
+      --bg-surface: rgba(8, 16, 20, 0.75);
+      --bg-card: rgba(10, 22, 28, 0.65);
+      --bg-card-border: rgba(0, 229, 255, 0.16);
       --neon-lime: #CCFF00;
-      --neon-lime-glow: rgba(204, 255, 0, 0.4);
+      --neon-lime-glow: rgba(204, 255, 0, 0.45);
       --neon-teal: #00E5FF;
-      --neon-teal-glow: rgba(0, 229, 255, 0.4);
+      --neon-teal-glow: rgba(0, 229, 255, 0.45);
       --text-main: #FFFFFF;
       --text-muted: #8E9EA7;
+      --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Lora', sans-serif;
+      font-family: 'Lora', serif;
       scroll-behavior: smooth;
+    }
+
+    ::selection {
+      background: var(--neon-lime);
+      color: #030708;
     }
 
     body {
@@ -38,8 +45,10 @@
       overflow-x: hidden;
       min-height: 100vh;
       position: relative;
+      line-height: 1.6;
     }
 
+    /* Interactive Background Mechanics */
     #particles-canvas {
       position: fixed;
       top: 0;
@@ -51,14 +60,14 @@
     }
 
     .glow-bg {
-      position: absolute;
-      width: 600px;
-      height: 600px;
+      position: fixed;
+      width: 650px;
+      height: 650px;
       border-radius: 50%;
-      filter: blur(120px);
+      filter: blur(140px);
       z-index: 0;
       pointer-events: none;
-      opacity: 0.25;
+      opacity: 0.18;
     }
     .glow-lime { top: 5%; left: -10%; background: var(--neon-lime); }
     .glow-teal { bottom: 10%; right: -10%; background: var(--neon-teal); }
@@ -68,75 +77,116 @@
       position: fixed;
       top: 0;
       width: 100%;
-      padding: 20px 5%;
+      padding: 16px 6%;
       display: flex;
       justify-content: space-between;
       align-items: center;
       background: rgba(3, 7, 8, 0.88);
-      backdrop-filter: blur(15px);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
       z-index: 100;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      transition: var(--transition-smooth);
+    }
+
+    header.scrolled {
+      padding: 12px 6%;
+      background: rgba(3, 7, 8, 0.95);
+      border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
     }
 
     .nav-logo {
-      height: 60px;
+      height: 72px;
       width: auto;
       object-fit: contain;
       display: block;
-      filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.4));
-      transition: transform 0.3s ease;
+      filter: drop-shadow(0 0 12px rgba(0, 229, 255, 0.45));
+      transition: var(--transition-smooth);
     }
 
     .nav-brand:hover .nav-logo {
       transform: scale(1.05);
+      filter: drop-shadow(0 0 18px var(--neon-teal-glow));
     }
 
     .nav-brand {
-      font-size: 1.0rem;
-      font-weight: 900;
+      font-size: 1rem;
+      font-weight: 700;
       letter-spacing: 3px;
       text-decoration: none;
       color: #fafafa;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
     }
 
     .nav-links {
       display: flex;
-      gap: 20px;
+      gap: 26px;
       list-style: none;
     }
 
     .nav-links a {
-      color: #ffffff;
+      color: var(--text-muted);
       text-decoration: none;
       font-weight: 600;
       font-size: 0.8rem;
-      letter-spacing: 1.5px;
+      letter-spacing: 1.8px;
       text-transform: uppercase;
-      transition: 0.3s ease;
+      transition: var(--transition-smooth);
+      position: relative;
+      padding: 6px 0;
     }
 
-    .nav-links a:hover, .nav-links a.active {
-      color: var(--neon-lime);
-      text-shadow: 0 0 10px var(--neon-lime-glow);
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--neon-lime), var(--neon-teal));
+      transition: var(--transition-smooth);
+      transform: translateX(-50%);
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
     }
 
     .social-links {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 14px;
     }
 
     .social-links a {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       color: var(--text-main);
-      font-size: 1.1rem;
-      transition: 0.3s ease;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: var(--transition-smooth);
     }
 
     .social-links a:hover {
       color: var(--neon-teal);
+      border-color: var(--neon-teal);
+      box-shadow: 0 0 15px var(--neon-teal-glow);
       transform: translateY(-2px);
     }
 
@@ -148,7 +198,7 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 130px 8% 60px 8%;
+      padding: 140px 8% 60px 8%;
       position: relative;
       z-index: 10;
     }
@@ -156,34 +206,30 @@
     .hero-top-tag {
       font-size: 0.85rem;
       font-weight: 700;
-      letter-spacing: 4px;
+      letter-spacing: 4.5px;
       color: #ffffff;
       text-transform: uppercase;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
+      padding: 7px 22px;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-top-tag .bullet {
+      color: var(--neon-lime);
+      margin: 0 4px;
+      text-shadow: 0 0 8px var(--neon-lime-glow);
     }
 
     .lime-text,
-.teal-text {
-  background: linear-gradient(90deg, #b8f000 0%, #3bf072 45%, #00e5c9 80%, #00e5ff 100%) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  filter: drop-shadow(0 0 10px rgba(0, 229, 201, 0.35));
-  display: inline-block;
-}
-
-    .portal-logo {
-      max-width: 140px;
-      max-height: 140px;
-      object-fit: contain;
-      z-index: 2;
-      filter: drop-shadow(0 0 15px rgba(0, 229, 255, 0.4));
-      animation: spinLeftToRight 15s linear infinite;
-      transform-style: preserve-3d;
-    }
-
-    @keyframes spinLeftToRight {
-      from { transform: perspective(600px) rotateY(360deg); }
-      to { transform: perspective(600px) rotateY(0deg); }
+    .teal-text {
+      background: linear-gradient(90deg, #b8f000 0%, #3bf072 45%, #00e5c9 80%, #00e5ff 100%) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      filter: drop-shadow(0 0 10px rgba(0, 229, 201, 0.35));
+      display: inline-block;
     }
 
     .hero-portal {
@@ -191,132 +237,63 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      margin-bottom: 25px;
-      gap: 15px;
+      margin-bottom: 35px;
+      gap: 18px;
+    }
+
+    .portal-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .portal-logo {
+      width: 240px;
+      height: 240px;
+      max-width: 85vw;
+      object-fit: contain;
+      filter: drop-shadow(0 0 32px rgba(0, 229, 255, 0.6));
+      animation: spinY 18s linear infinite;
+      transform-style: preserve-3d;
+    }
+
+    @keyframes spinY {
+      from { transform: perspective(900px) rotateY(0deg); }
+      to { transform: perspective(900px) rotateY(360deg); }
     }
 
     .sub-logo {
-      max-width: 160px;
+      width: 270px;
+      max-width: 88vw;
       height: auto;
       object-fit: contain;
-      filter: drop-shadow(0 0 12px rgba(204, 255, 0, 0.3));
-      transition: transform 0.3s ease;
+      filter: drop-shadow(0 0 18px rgba(204, 255, 0, 0.45));
+      transition: var(--transition-smooth);
     }
 
     .sub-logo:hover {
       transform: scale(1.05);
     }
 
-    /* ================= JOINT VENTURE BADGE ================= */
-.joint-venture-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  margin: 20px 0 25px 0;
-}
-
-.jv-label {
-  font-size: 0.72rem;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.jv-label::before,
-.jv-label::after {
-  content: '';
-  width: 35px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--neon-teal));
-}
-
-.jv-label::after {
-  background: linear-gradient(90deg, var(--neon-teal), transparent);
-}
-
-.jv-partners {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.jv-partner-card {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 18px;
-  background: rgba(10, 20, 24, 0.7);
-  border: 1px solid var(--bg-card-border);
-  border-radius: 30px;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.jv-partner-card:hover {
-  border-color: var(--neon-lime);
-  box-shadow: 0 0 15px var(--neon-lime-glow);
-  transform: translateY(-2px);
-}
-
-/* Icon / image placeholder */
-.jv-icon-box {
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: rgba(0, 229, 255, 0.1);
-  border: 1px solid var(--neon-teal);
-  color: var(--neon-teal);
-  font-size: 0.8rem;
-  overflow: hidden;
-}
-
-.jv-icon-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.jv-name {
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  color: #ffffff;
-  text-transform: uppercase;
-}
-
-.jv-divider {
-  color: var(--neon-lime);
-  font-size: 0.9rem;
-  font-weight: 900;
-}
-
-   /* ================= HERO GRID & COUNTDOWN REFINED ================= */
+    /* ================= HERO GRID & COUNTDOWN ================= */
     .hero-grid {
       display: flex;
       justify-content: center;
       align-items: center;
       width: 100%;
       max-width: 1100px;
-      margin-top: 35px;
-      gap: 50px; /* Expands spacing between texts and the countdown box */
+      margin-top: 25px;
+      gap: 45px;
     }
 
     .hero-side {
       flex: 1;
-      text-align: right; /* Left text aligns toward the countdown */
+      text-align: right;
     }
 
     .hero-side.right {
-      text-align: left; /* Right text aligns toward the countdown */
+      text-align: left;
     }
 
     .hero-side h5 {
@@ -329,8 +306,8 @@
     }
 
     .hero-side h3 {
-      font-size: 1.4rem;
-      font-weight: 800;
+      font-size: 1.45rem;
+      font-weight: 700;
       letter-spacing: 2.5px;
       text-transform: uppercase;
       white-space: nowrap;
@@ -340,12 +317,12 @@
       display: flex;
       align-items: center;
       gap: 15px;
-      background: rgba(8, 16, 20, 0.8);
-      padding: 16px 32px;
+      background: rgba(8, 16, 20, 0.82);
+      padding: 16px 34px;
       border-radius: 60px;
       border: 1px solid rgba(0, 229, 255, 0.3);
-      box-shadow: 0 0 25px rgba(0, 229, 255, 0.12), inset 0 0 15px rgba(0, 229, 255, 0.05);
-      backdrop-filter: blur(12px);
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.12), inset 0 0 15px rgba(0, 229, 255, 0.05);
+      backdrop-filter: blur(16px);
       flex-shrink: 0;
     }
 
@@ -357,7 +334,6 @@
       position: relative;
     }
 
-    /* Elegant divider between countdown numbers */
     .count-box:not(:last-child)::after {
       content: '';
       position: absolute;
@@ -365,15 +341,15 @@
       top: 20%;
       height: 60%;
       width: 1px;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.12);
     }
 
     .count-number {
-      font-size: 2rem;
-      font-weight: 900;
+      font-size: 2.1rem;
+      font-weight: 700;
       line-height: 1.1;
       color: var(--neon-lime);
-      text-shadow: 0 0 12px var(--neon-lime-glow);
+      text-shadow: 0 0 14px var(--neon-lime-glow);
       font-variant-numeric: tabular-nums;
     }
 
@@ -391,52 +367,60 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 15px;
-      margin-top: 35px;
+      gap: 16px;
+      margin-top: 38px;
     }
 
     .btn-primary {
       background: linear-gradient(90deg, var(--neon-lime), var(--neon-teal));
       color: var(--bg-dark);
-      padding: 14px 35px;
-      border-radius: 30px;
-      font-weight: 800;
-      font-size: 0.85rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      border: none;
-      cursor: pointer;
-    }
-
-    .btn-primary:hover {
-      box-shadow: 0 0 25px var(--neon-teal-glow);
-      transform: translateY(-3px);
-    }
-
-    .btn-secondary {
-      background: transparent;
-      color: var(--text-main);
-      padding: 14px 35px;
+      padding: 14px 36px;
       border-radius: 30px;
       font-weight: 700;
       font-size: 0.85rem;
       letter-spacing: 2px;
       text-transform: uppercase;
       text-decoration: none;
+      transition: var(--transition-smooth);
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 0 30px var(--neon-teal-glow);
+      transform: translateY(-3px) scale(1.02);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-main);
+      padding: 14px 36px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
       border: 1px solid var(--neon-teal);
-      transition: all 0.3s ease;
+      transition: var(--transition-smooth);
+      backdrop-filter: blur(8px);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .btn-secondary:hover {
       background: rgba(0, 229, 255, 0.1);
-      box-shadow: 0 0 15px var(--neon-teal-glow);
+      box-shadow: 0 0 20px var(--neon-teal-glow);
+      transform: translateY(-3px);
     }
 
     /* ================= SECTIONS COMMON ================= */
     section {
-      padding: 100px 8%;
+      padding: 110px 8%;
       position: relative;
       z-index: 10;
     }
@@ -448,67 +432,233 @@
 
     .section-title h4 {
       font-size: 0.85rem;
-      letter-spacing: 4px;
+      letter-spacing: 4.5px;
       color: var(--neon-teal);
       text-transform: uppercase;
+      font-weight: 600;
     }
 
     .section-title h2 {
-      font-size: 2.5rem;
-      font-weight: 900;
+      font-size: 2.6rem;
+      font-weight: 700;
       letter-spacing: 3px;
       text-transform: uppercase;
-      margin-top: 5px;
+      margin-top: 6px;
     }
 
-    /* ================= ABOUT ================= */
+    /* ================= ABOUT SECTION ================= */
     .about-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 50px;
-      align-items: center;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 45px;
+      align-items: stretch;
+      margin-bottom: 50px;
     }
 
     .about-card {
       background: var(--bg-card);
       border: 1px solid var(--bg-card-border);
-      padding: 40px;
-      border-radius: 20px;
+      padding: 44px;
+      border-radius: 24px;
+      backdrop-filter: blur(14px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--neon-teal), transparent);
     }
 
     .about-card p {
       color: var(--text-muted);
-      line-height: 1.8;
-      font-size: 0.95rem;
-      margin-bottom: 15px;
+      line-height: 1.85;
+      font-size: 0.98rem;
+      margin-bottom: 16px;
+    }
+
+    .about-card p:last-child {
+      margin-bottom: 0;
     }
 
     .stats-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
+      gap: 18px;
     }
 
     .stat-box {
-      background: var(--bg-card);
+      background: var(--bg-surface);
       border: 1px solid var(--bg-card-border);
-      padding: 25px;
-      border-radius: 15px;
+      padding: 26px 20px;
+      border-radius: 18px;
       text-align: center;
+      transition: var(--transition-smooth);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .stat-box:hover {
+      border-color: var(--neon-lime);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(204, 255, 0, 0.15);
     }
 
     .stat-number {
-      font-size: 2.5rem;
-      font-weight: 900;
+      font-size: 2.6rem;
+      font-weight: 700;
       color: var(--neon-lime);
+      text-shadow: 0 0 16px var(--neon-lime-glow);
     }
 
     .stat-desc {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       letter-spacing: 2px;
       color: var(--text-muted);
       text-transform: uppercase;
-      margin-top: 5px;
+      margin-top: 6px;
+      font-weight: 600;
+    }
+
+    /* Founding Architects Showcase */
+    .about-architect-showcase {
+      background: linear-gradient(180deg, rgba(8, 16, 20, 0.8) 0%, rgba(3, 7, 8, 0.94) 100%);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      border-radius: 28px;
+      padding: 50px 45px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .about-architect-showcase::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 15%;
+      right: 15%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--neon-teal), transparent);
+    }
+
+    .showcase-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .showcase-eyebrow {
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: var(--neon-teal);
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .showcase-title {
+      font-size: 1.85rem;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    .architect-duo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 35px;
+    }
+
+    .architect-box {
+      background: rgba(4, 10, 12, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 22px;
+      padding: 38px 32px;
+      position: relative;
+      transition: var(--transition-smooth);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .architect-box:hover {
+      transform: translateY(-5px);
+    }
+
+    .architect-box.lime:hover {
+      border-color: rgba(204, 255, 0, 0.5);
+      box-shadow: 0 15px 35px -10px rgba(204, 255, 0, 0.2);
+    }
+
+    .architect-box.teal:hover {
+      border-color: rgba(0, 229, 255, 0.5);
+      box-shadow: 0 15px 35px -10px rgba(0, 229, 255, 0.2);
+    }
+
+    .arch-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .arch-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+    }
+
+    .architect-box.lime .arch-icon {
+      background: rgba(204, 255, 0, 0.08);
+      color: var(--neon-lime);
+      border: 1px solid rgba(204, 255, 0, 0.35);
+    }
+
+    .architect-box.teal .arch-icon {
+      background: rgba(0, 229, 255, 0.08);
+      color: var(--neon-teal);
+      border: 1px solid rgba(0, 229, 255, 0.35);
+    }
+
+    .arch-pillar {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 5px 14px;
+      border-radius: 20px;
+    }
+
+    .architect-box h3 {
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    .architect-box p {
+      color: var(--text-muted);
+      font-size: 0.94rem;
+      line-height: 1.75;
     }
 
     /* ================= SERVICES ================= */
@@ -521,43 +671,78 @@
     .service-card {
       background: var(--bg-card);
       border: 1px solid var(--bg-card-border);
-      padding: 35px 25px;
-      border-radius: 20px;
-      transition: 0.3s ease;
+      padding: 40px 30px;
+      border-radius: 22px;
+      transition: var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 10%;
+      width: 80%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--neon-teal), transparent);
+      opacity: 0;
+      transition: var(--transition-smooth);
     }
 
     .service-card:hover {
       border-color: var(--neon-teal);
       transform: translateY(-8px);
-      box-shadow: 0 10px 30px rgba(0, 229, 255, 0.1);
+      box-shadow: 0 15px 35px rgba(0, 229, 255, 0.15);
+    }
+
+    .service-card:hover::after {
+      opacity: 1;
     }
 
     .service-icon {
-      font-size: 2.5rem;
+      font-size: 2.6rem;
       color: var(--neon-lime);
       margin-bottom: 20px;
+      transition: var(--transition-smooth);
+    }
+
+    .service-card:hover .service-icon {
+      transform: scale(1.1);
+      filter: drop-shadow(0 0 12px var(--neon-lime-glow));
     }
 
     .service-card h3 {
-      font-size: 1.2rem;
-      font-weight: 800;
+      font-size: 1.25rem;
+      font-weight: 700;
       margin-bottom: 10px;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
     }
 
     .service-card p {
       color: var(--text-muted);
-      font-size: 0.85rem;
-      line-height: 1.6;
+      font-size: 0.88rem;
+      line-height: 1.7;
     }
 
-    /* ================= SUNSET JOURNEY STYLING ================= */
+    /* ================= SUNSET JOURNEY ================= */
     #sunset-journey {
-      padding: 90px 8%;
+      padding: 95px 8%;
       position: relative;
       z-index: 10;
       text-align: center;
+    }
+
+    .sunset-card-container {
+      background: radial-gradient(circle at 50% 0%, rgba(255, 120, 0, 0.15), rgba(8, 16, 20, 0.85) 70%);
+      border: 1px solid rgba(255, 120, 0, 0.35);
+      border-radius: 32px;
+      padding: 60px 40px;
+      max-width: 900px;
+      margin: 0 auto;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 0 40px rgba(255, 100, 0, 0.1);
     }
 
     #sunset-journey .section-title h4 {
@@ -565,209 +750,128 @@
       letter-spacing: 4px;
       color: var(--neon-teal);
       text-transform: uppercase;
-      font-weight: 700;
+      font-weight: 600;
       margin-bottom: 8px;
     }
 
     #sunset-journey .section-title h2 {
-  font-size: 2.5rem;
-  font-weight: 900;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  margin-top: 5px;
-  background: linear-gradient(90deg, #b8f000 0%, #3bf072 45%, #00e5c9 80%, #00e5ff 100%) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  filter: drop-shadow(0 0 10px rgba(0, 229, 201, 0.35));
-  display: inline-block;
-}
-   .coming-soon-tag {
-  display: inline-block;
-  margin: 25px auto 0 auto; /* Places it cleanly underneath with top spacing */
-  font-size: 1.1rem; /* Larger, readable size */
-  font-weight: 800;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--neon-lime);
-  border: 2px solid var(--neon-lime);
-  padding: 12px 36px; /* Generous pill padding */
-  border-radius: 40px;
-  background: rgba(204, 255, 0, 0.05);
-  box-shadow: 0 0 20px var(--neon-lime-glow);
-  backdrop-filter: blur(8px);
-  transition: all 0.3s ease;
-}
-
-.coming-soon-tag:hover {
-  background: rgba(204, 255, 0, 0.15);
-  box-shadow: 0 0 30px var(--neon-lime-glow);
-  transform: translateY(-2px);
-}
-
-
-    /* ================= SUNSET JOURNEY TEASER ================= */
-    .sunset-teaser-section {
-      padding: 90px 8%;
-      position: relative;
-      z-index: 10;
-      text-align: center;
+      font-size: 2.6rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-top: 5px;
+      background: linear-gradient(90deg, #b8f000 0%, #3bf072 45%, #00e5c9 80%, #00e5ff 100%) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      filter: drop-shadow(0 0 10px rgba(0, 229, 201, 0.35));
+      display: inline-block;
     }
 
-    .sunset-teaser-box {
-      background: radial-gradient(circle at 50% 0%, rgba(255, 94, 0, 0.15), rgba(10, 20, 24, 0.85) 70%);
-      border: 1px solid rgba(255, 120, 0, 0.35);
-      box-shadow: 0 0 35px rgba(255, 90, 0, 0.12), inset 0 0 20px rgba(255, 120, 0, 0.05);
-      border-radius: 28px;
-      padding: 60px 40px;
-      max-width: 950px;
-      margin: 0 auto;
-      backdrop-filter: blur(16px);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .sunset-teaser-box::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 450px;
-      height: 250px;
-      background: radial-gradient(ellipse, rgba(255, 120, 0, 0.4), transparent 70%);
-      filter: blur(60px);
-      pointer-events: none;
-    }
-
-    .sunset-tag {
+    .coming-soon-tag {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 6px 18px;
-      background: rgba(255, 106, 0, 0.12);
-      border: 1px solid rgba(255, 120, 0, 0.5);
-      border-radius: 20px;
-      font-size: 0.75rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: #ff9d5c;
+      gap: 8px;
+      margin: 25px auto 0 auto;
+      font-size: 1.05rem;
       font-weight: 700;
-      margin-bottom: 20px;
-    }
-
-    .sunset-tag i {
-      color: #ff7800;
-    }
-
-    .sunset-title {
-      font-size: 2.6rem;
-      font-weight: 900;
       letter-spacing: 4px;
       text-transform: uppercase;
-      margin-bottom: 15px;
-      background: linear-gradient(90deg, #ffcc00 0%, #ff5e00 50%, #00e5ff 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 15px rgba(255, 94, 0, 0.3));
+      color: var(--neon-lime);
+      border: 2px solid var(--neon-lime);
+      padding: 12px 38px;
+      border-radius: 40px;
+      background: rgba(204, 255, 0, 0.05);
+      box-shadow: 0 0 22px var(--neon-lime-glow);
+      backdrop-filter: blur(8px);
+      transition: var(--transition-smooth);
     }
 
-    .sunset-subtext {
-      color: #ffffff;
-      font-size: 1rem;
+    .coming-soon-tag:hover {
+      background: rgba(204, 255, 0, 0.15);
+      box-shadow: 0 0 32px var(--neon-lime-glow);
+      transform: translateY(-2px);
+    }
+
+    /* ================= GALLERY (PLACEHOLDER) ================= */
+    .gallery-placeholder-card {
+      background: var(--bg-card);
+      border: 1px dashed var(--bg-card-border);
+      border-radius: 24px;
+      padding: 65px 30px;
+      text-align: center;
+      max-width: 780px;
+      margin: 0 auto;
+      backdrop-filter: blur(14px);
+    }
+
+    .placeholder-icon {
+      font-size: 2.8rem;
+      color: var(--neon-teal);
+      margin-bottom: 20px;
+      text-shadow: 0 0 16px var(--neon-teal-glow);
+    }
+
+    .gallery-placeholder-card h3 {
+      font-size: 1.45rem;
+      font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
-      opacity: 0.9;
-      max-width: 650px;
-      margin: 0 auto 30px auto;
-      line-height: 1.6;
+      color: #ffffff;
+      margin-bottom: 12px;
     }
 
-    .sunset-badge {
+    .gallery-placeholder-card p {
+      color: var(--text-muted);
+      font-size: 0.94rem;
+      line-height: 1.7;
+      max-width: 480px;
+      margin: 0 auto 26px auto;
+    }
+
+    .placeholder-tag {
       display: inline-block;
-      border: 1px dashed var(--neon-lime);
-      color: var(--neon-lime);
-      padding: 10px 28px;
-      border-radius: 30px;
-      font-size: 0.8rem;
-      font-weight: 800;
+      font-size: 0.75rem;
+      font-weight: 700;
       letter-spacing: 3px;
       text-transform: uppercase;
-      box-shadow: 0 0 15px var(--neon-lime-glow);
-    }
-
-    /* ================= GALLERY ================= */
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-    }
-
-    .gallery-item {
-      position: relative;
-      height: 250px;
-      border-radius: 15px;
-      overflow: hidden;
-      border: 1px solid var(--bg-card-border);
-    }
-
-    .gallery-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: 0.5s ease;
-      filter: grayscale(40%) opacity(0.8);
-    }
-
-    .gallery-item:hover img {
-      transform: scale(1.08);
-      filter: grayscale(0%) opacity(1);
-    }
-
-    .gallery-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 40%, rgba(3, 7, 8, 0.9));
-      display: flex;
-      align-items: flex-end;
-      padding: 20px;
-    }
-
-    .gallery-overlay h4 {
-      font-size: 1rem;
-      font-weight: 800;
-      letter-spacing: 1px;
       color: var(--neon-lime);
+      border: 1px solid rgba(204, 255, 0, 0.4);
+      background: rgba(204, 255, 0, 0.05);
+      padding: 6px 20px;
+      border-radius: 20px;
     }
 
     /* ================= TEAM ================= */
     .team-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 30px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 32px;
     }
 
     .team-card {
       background: var(--bg-card);
       border: 1px solid var(--bg-card-border);
-      padding: 30px;
-      border-radius: 20px;
+      padding: 32px 26px;
+      border-radius: 22px;
       text-align: center;
-      transition: 0.3s ease;
+      transition: var(--transition-smooth);
     }
 
     .team-card:hover {
       border-color: var(--neon-lime);
-      transform: translateY(-5px);
+      transform: translateY(-6px);
+      box-shadow: 0 15px 35px rgba(204, 255, 0, 0.12);
     }
 
     .team-avatar {
       width: 100%;
       max-width: 250px;
       height: 300px;
-      margin: 0 auto 15px auto;
+      margin: 0 auto 18px auto;
       overflow: hidden;
       border-radius: 20px;
       background-color: #0e1a20;
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .team-avatar img {
@@ -776,117 +880,207 @@
       object-fit: cover;
       object-position: center;
       display: block;
+      transition: var(--transition-smooth);
+    }
+
+    .team-card:hover .team-avatar img {
+      transform: scale(1.04);
     }
 
     .team-card h3 {
-      font-size: 1.1rem;
-      font-weight: 800;
+      font-size: 1.2rem;
+      font-weight: 700;
       letter-spacing: 1px;
     }
 
     .team-card h5 {
-      font-size: 0.75rem;
+      font-size: 0.76rem;
       color: var(--neon-lime);
       letter-spacing: 2px;
       text-transform: uppercase;
-      margin-top: 4px;
+      margin-top: 5px;
       margin-bottom: 12px;
+      font-weight: 600;
     }
 
     .team-card p {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
+      line-height: 1.65;
     }
 
-    /* ================= SPONSORS ================= */
-    .sponsors-flex {
+    /* ================= PARTNERS: 36 BALANCED HIGH-VISIBILITY LOGOS ================= */
+    .brand-logos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 20px;
+      max-width: 1250px;
+      margin: 0 auto;
+    }
+
+    .brand-logo-item {
       display: flex;
-      justify-content: center;
       align-items: center;
-      gap: 40px;
-      flex-wrap: wrap;
-      opacity: 0.6;
+      justify-content: center;
+      height: 110px;
+      padding: 8px 14px;
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      border-radius: 14px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      transition: var(--transition-smooth);
+      overflow: hidden;
     }
 
-    .sponsor-logo {
-      font-size: 1.5rem;
-      font-weight: 900;
-      letter-spacing: 3px;
-      color: var(--text-muted);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 15px 30px;
-      border-radius: 10px;
+    /* Uniform large presence across vertical and horizontal files */
+    .brand-logo-item img {
+      width: 90%;
+      height: 85%;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      object-position: center;
+      filter: none !important;
+      opacity: 1 !important;
+      display: block;
+      transition: var(--transition-smooth);
     }
 
-    /* ================= CONTACT ================= */
+    .brand-logo-item:hover {
+      background: #FFFFFF;
+      border-color: var(--neon-teal);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0, 229, 255, 0.4);
+    }
+
+    .brand-logo-item:hover img {
+      transform: scale(1.08);
+    }
+
+    /* ================= CONTACT SECTION ================= */
     .contact-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 40px;
+      gap: 45px;
       background: var(--bg-card);
       border: 1px solid var(--bg-card-border);
-      padding: 40px;
-      border-radius: 20px;
+      padding: 48px;
+      border-radius: 26px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
     }
 
     .contact-form {
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: 16px;
     }
 
-    .form-group input, .form-group textarea {
+    .form-group input,
+    .form-group textarea {
       width: 100%;
-      background: rgba(3, 7, 8, 0.7);
+      background: rgba(3, 7, 8, 0.75);
       border: 1px solid var(--bg-card-border);
-      padding: 15px;
-      border-radius: 10px;
+      padding: 16px;
+      border-radius: 12px;
       color: #fff;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       outline: none;
-      transition: 0.3s ease;
+      transition: var(--transition-smooth);
     }
 
-    .form-group input:focus, .form-group textarea:focus {
+    .form-group input:focus,
+    .form-group textarea:focus {
       border-color: var(--neon-teal);
-      box-shadow: 0 0 10px var(--neon-teal-glow);
+      box-shadow: 0 0 12px var(--neon-teal-glow);
     }
 
     .contact-info {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      gap: 16px;
     }
 
     .info-item {
       display: flex;
       align-items: center;
-      gap: 15px;
-      margin-bottom: 20px;
+      gap: 16px;
+      text-decoration: none;
+      padding: 12px 16px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: var(--transition-smooth);
+    }
+
+    .info-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      transform: translateX(6px);
     }
 
     .info-icon {
-      width: 45px;
-      height: 45px;
-      background: rgba(0, 229, 255, 0.1);
-      border: 1px solid var(--neon-teal);
-      border-radius: 10px;
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      transition: var(--transition-smooth);
+    }
+
+    .info-icon.whatsapp {
+      background: rgba(37, 211, 102, 0.12);
+      border: 1px solid #25D366;
+      color: #25D366;
+    }
+
+    .info-icon.phone {
+      background: rgba(204, 255, 0, 0.1);
+      border: 1px solid var(--neon-lime);
+      color: var(--neon-lime);
+    }
+
+    .info-icon.email {
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px solid var(--neon-teal);
       color: var(--neon-teal);
-      font-size: 1.2rem;
+    }
+
+    .info-icon.location {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+    }
+
+    .info-item:hover .info-icon.whatsapp {
+      box-shadow: 0 0 16px rgba(37, 211, 102, 0.55);
+      transform: scale(1.08);
+    }
+
+    .info-item:hover .info-icon.phone {
+      box-shadow: 0 0 16px var(--neon-lime-glow);
+      transform: scale(1.08);
+    }
+
+    .info-item:hover .info-icon.email {
+      box-shadow: 0 0 16px var(--neon-teal-glow);
+      transform: scale(1.08);
     }
 
     .info-text h5 {
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
+      margin-bottom: 2px;
+      font-weight: 600;
     }
 
     .info-text p {
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 700;
       color: #fff;
     }
@@ -895,7 +1089,7 @@
     footer {
       background: #010304;
       border-top: 1px solid rgba(255, 255, 255, 0.05);
-      padding: 80px 8% 30px 8%;
+      padding: 85px 8% 32px 8%;
       position: relative;
       z-index: 10;
     }
@@ -903,46 +1097,54 @@
     .footer-grid {
       display: grid;
       grid-template-columns: 2fr 1fr 1fr;
-      gap: 40px;
-      margin-bottom: 50px;
+      gap: 50px;
+      margin-bottom: 55px;
     }
 
     .footer-brand h2 {
-      font-size: 2rem;
-      font-weight: 900;
+      font-size: 2.1rem;
+      font-weight: 700;
       letter-spacing: 4px;
       background: linear-gradient(90deg, var(--neon-lime), var(--neon-teal));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 15px;
+      margin-bottom: 16px;
+      display: inline-block;
     }
 
     .footer-brand p {
       color: var(--text-muted);
-      font-size: 0.9rem;
-      max-width: 350px;
-      line-height: 1.6;
+      font-size: 0.92rem;
+      max-width: 360px;
+      line-height: 1.7;
     }
 
     .footer-col h4 {
       font-size: 0.85rem;
-      letter-spacing: 2px;
+      letter-spacing: 2.5px;
       color: #fff;
       text-transform: uppercase;
       margin-bottom: 20px;
+      font-weight: 600;
     }
 
     .footer-col ul { list-style: none; }
-    .footer-col ul li { margin-bottom: 10px; }
+    .footer-col ul li { margin-bottom: 12px; }
 
     .footer-col ul li a {
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 0.85rem;
-      transition: 0.3s ease;
+      font-size: 0.86rem;
+      transition: var(--transition-smooth);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .footer-col ul li a:hover { color: var(--neon-lime); }
+    .footer-col ul li a:hover { 
+      color: var(--neon-lime); 
+      transform: translateX(5px);
+    }
 
     .footer-bottom {
       text-align: center;
@@ -959,13 +1161,26 @@
     .menu-btn {
       display: none;
       color: #fff;
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       cursor: pointer;
     }
 
     @media (max-width: 900px) {
       .menu-btn { display: block; }
       
+      .nav-logo {
+        height: 56px;
+      }
+
+      .portal-logo {
+        width: 180px;
+        height: 180px;
+      }
+
+      .sub-logo {
+        width: 220px;
+      }
+
       .nav-links {
         display: none;
         flex-direction: column;
@@ -973,20 +1188,23 @@
         top: 100%;
         left: 0;
         width: 100%;
-        background: rgba(3, 7, 8, 0.95);
-        padding: 20px;
+        background: rgba(3, 7, 8, 0.98);
+        padding: 24px;
         text-align: center;
         border-bottom: 1px solid var(--bg-card-border);
+        gap: 16px;
       }
 
       .nav-links.active {
         display: flex;
       }
 
-      .about-grid, .contact-container { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr; }
+      .about-grid, .contact-container, .architect-duo-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 40px; }
       .hero-grid { flex-direction: column; gap: 20px; }
       .hero-side, .hero-side.right { text-align: center; }
+      .brand-logos-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; }
+      .brand-logo-item { height: 85px; padding: 6px 10px; }
     }
   </style>
 </head>
@@ -997,7 +1215,8 @@
   <div class="glow-bg glow-lime"></div>
   <div class="glow-bg glow-teal"></div>
 
-  <header>
+  <!-- NAVBAR -->
+  <header id="site-header">
     <a href="#" class="nav-brand">
       <img src="Opening Logo-01.png" alt="NEON Communications" class="nav-logo">
     </a>
@@ -1005,6 +1224,7 @@
     <ul class="nav-links" id="nav-menu">
       <li><a href="#about">About</a></li>
       <li><a href="#services">Services</a></li>
+      <li><a href="#sunset-journey">Sunset Journey</a></li>
       <li><a href="#gallery">Gallery</a></li>
       <li><a href="#team">Team</a></li>
       <li><a href="#sponsors">Partners</a></li>
@@ -1012,55 +1232,33 @@
     </ul>
 
     <div class="social-links">
-      <a href="https://www.instagram.com/neoncomm" target="_blank" aria-label="Instagram">
+      <a href="https://www.instagram.com/neoncomm" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
         <i class="fa-brands fa-instagram"></i>
       </a>
-      <a href="https://www.facebook.com/neoncomofficial" target="_blank" aria-label="Facebook">
+      <a href="https://www.facebook.com/neoncomofficial" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
         <i class="fa-brands fa-facebook-f"></i>
       </a>
-      <a href="https://www.linkedin.com/company/neoncomm" target="_blank" aria-label="LinkedIn">
+      <a href="https://www.linkedin.com/company/neoncomm" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
         <i class="fa-brands fa-linkedin-in"></i>
       </a>
       <i class="fa-solid fa-bars menu-btn" id="menu-toggle"></i>
     </div>
   </header>
 
-  <section class="hero">
+  <!-- ================= HERO SECTION ================= -->
+  <section class="hero" id="home">
     <div class="hero-top-tag">
-      Experience <span class="lime">•</span> Connect <span class="teal">•</span> Celebrate
+      Experience <span class="bullet">•</span> Connect <span class="bullet">•</span> Celebrate
     </div>
 
-   <div class="hero-portal">
-      <img src="Opening Logo-01.png" alt="NEON Logo" class="portal-logo">
-      <div class="hero-sublogo-container">
-        <img src="Opening Logo-02.png" alt="Secondary Brand Logo" class="sub-logo">
-      </div>
-
-     <!-- JOINT VENTURE BADGE -->
-      <div class="joint-venture-wrapper">
-        <span class="jv-label">A Joint Venture Of</span>
-        <div class="jv-partners">
-          <!-- Excellence 360 -->
-          <div class="jv-partner-card">
-            <div class="jv-icon-box">
-              <!-- When ready, replace the <i> icon with: <img src="excellence360-logo.png" alt="Excellence 360"> -->
-              <i class="fa-solid fa-gem"></i>
-            </div>
-            <span class="jv-name">Excellence 360</span>
-          </div>
-
-          <span class="jv-divider">&bull;</span>
-
-          <!-- Truffle Events -->
-          <div class="jv-partner-card">
-            <div class="jv-icon-box">
-              <!-- When ready, replace the <i> icon with: <img src="truffle-events-logo.png" alt="Truffle Events"> -->
-              <i class="fa-solid fa-champagne-glasses"></i>
-            </div>
-            <span class="jv-name">Truffle Events</span>
-          </div>
+    <div class="hero-portal" id="hero-portal">
+      <div class="portal-stage" id="portal-stage">
+        <img src="Opening Logo-01.png" alt="NEON Logo" class="portal-logo">
+        <div class="hero-sublogo-container">
+          <img src="Opening Logo-02.png" alt="Secondary Brand Logo" class="sub-logo">
         </div>
       </div>
+    </div>
 
     <div class="hero-grid">
       <div class="hero-side">
@@ -1068,7 +1266,7 @@
         <h3 class="lime-text">Extraordinary</h3>
       </div>
 
-      <div class="countdown-container">
+      <div class="countdown-container" aria-label="Countdown">
         <div class="count-box"><div class="count-number" id="days">00</div><div class="count-label">Days</div></div>
         <div class="count-box"><div class="count-number" id="hours">00</div><div class="count-label">Hours</div></div>
         <div class="count-box"><div class="count-number" id="mins">00</div><div class="count-label">Mins</div></div>
@@ -1082,11 +1280,12 @@
     </div>
 
     <div class="btn-group">
-      <a href="#contact" class="btn-primary">Connect With Us</a>
-      <a href="#services" class="btn-secondary">Explore Services</a>
+      <a href="#contact" class="btn-primary"><i class="fa-solid fa-paper-plane"></i> Connect With Us</a>
+      <a href="#services" class="btn-secondary"><i class="fa-solid fa-compass"></i> Explore Services</a>
     </div>
   </section>
 
+  <!-- ================= ABOUT SECTION ================= -->
   <section id="about">
     <div class="section-title">
       <h4>Who We Are</h4>
@@ -1113,21 +1312,48 @@
           <div class="stat-desc">Live Acts</div>
         </div>
         <div class="stat-box">
-          <div class="stat-number">12</div>
-          <div class="stat-desc">Awards</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-number">3</div>
-          <div class="stat-desc">Stages</div>
-        </div>
-        <div class="stat-box">
           <div class="stat-number">100%</div>
           <div class="stat-desc">Satisfaction</div>
         </div>
       </div>
     </div>
+
+    <!-- FOUNDING ARCHITECTS -->
+    <div class="about-architect-showcase">
+      <div class="showcase-header">
+        <span class="showcase-eyebrow">A Collaborative Synergy</span>
+        <h3 class="showcase-title">Founding Architects</h3>
+      </div>
+
+      <div class="architect-duo-grid">
+        <!-- Excellence 360 -->
+        <div class="architect-box lime">
+          <div class="arch-top">
+            <div class="arch-icon"><i class="fa-solid fa-gem"></i></div>
+            <span class="arch-pillar">Strategy &amp; Direction</span>
+          </div>
+          <h3>Excellence 360</h3>
+          <p>
+            Operating as the strategic powerhouse behind NEON, driving end-to-end brand evolution, visionary commercial roadmaps, and business development across modern creative sectors.
+          </p>
+        </div>
+
+        <!-- Truffle Events -->
+        <div class="architect-box teal">
+          <div class="arch-top">
+            <div class="arch-icon"><i class="fa-solid fa-champagne-glasses"></i></div>
+            <span class="arch-pillar">Experiential Production</span>
+          </div>
+          <h3>Truffle Events</h3>
+          <p>
+            Serving as the experiential architects, bringing decades of mastery in large-scale event logistics, sensory stagecraft, kinetic lighting, and cutting-edge electronic culture curation.
+          </p>
+        </div>
+      </div>
+    </div>
   </section>
 
+  <!-- ================= SERVICES ================= -->
   <section id="services">
     <div class="section-title">
       <h4>What We Deliver</h4>
@@ -1153,21 +1379,18 @@
         <p>Interactive 3D visuals, real-time stage graphics, and immersive digital content production.</p>
       </div>
 
-      <!-- New Card 1 -->
       <div class="service-card">
         <i class="fa-solid fa-sliders service-icon" style="color: var(--neon-teal);"></i>
         <h3>Audio Engineering</h3>
         <p>High-fidelity spatial audio mastering, live concert acoustic mapping, and club sound system calibration.</p>
       </div>
 
-      <!-- New Card 2 -->
       <div class="service-card">
         <i class="fa-solid fa-lightbulb service-icon"></i>
-        <h3>Stage & Lighting Design</h3>
+        <h3>Stage &amp; Lighting Design</h3>
         <p>Bespoke kinetic laser systems, programmed DMX lighting rigs, and architectural ambient installations.</p>
       </div>
 
-      <!-- New Card 3 -->
       <div class="service-card">
         <i class="fa-solid fa-users-gear service-icon" style="color: var(--neon-teal);"></i>
         <h3>Artist Management</h3>
@@ -1176,46 +1399,40 @@
     </div>
   </section>
 
-  <!-- SUNSET JOURNEY TEASER SEGMENT -->
-  <section class="sunset-teaser-section" id="sunset-journey">
-    <div class="sunset-teaser-box">
-      <div class="sunset-tag">
-        <i class="fa-solid fa-sun"></i> Upcoming Event Experience
+  <!-- ================= SUNSET JOURNEY ================= -->
+  <section id="sunset-journey">
+    <div class="sunset-card-container">
+      <div class="section-title" style="margin-bottom: 25px;">
+        <h4>Event Experience</h4>
+        <h2>The Sunset Journey</h2>
       </div>
-      <h2 class="sunset-title">The Sunset Journey</h2>
-      <p class="sunset-subtext">
-        An immersive open-air twilight odyssey merging hypnotic soundscapes, sunset light synthesis, and deep electronic rhythms.
+      <p style="color: var(--text-muted); font-size: 0.96rem; max-width: 600px; margin: 0 auto;">
+        A specialized sensory electronic odyssey blending sundown atmosphere with boundary-pushing audio-visual arts.
       </p>
-      <div class="sunset-badge">
-        <i class="fa-regular fa-clock"></i> Coming Soon • Stay Tuned
+      <div>
+        <span class="coming-soon-tag"><i class="fa-regular fa-clock"></i> Coming Soon</span>
       </div>
     </div>
   </section>
 
+  <!-- ================= GALLERY ================= -->
   <section id="gallery">
     <div class="section-title">
       <h4>Visual Showcase</h4>
       <h2>Gallery</h2>
     </div>
 
-    <div class="gallery-grid">
-      <div class="gallery-item">
-        <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=600&q=80" alt="Neon Stage">
-        <div class="gallery-overlay"><h4>Main Stage Lightshow</h4></div>
+    <div class="gallery-placeholder-card">
+      <div class="placeholder-icon">
+        <i class="fa-solid fa-photo-film"></i>
       </div>
-
-      <div class="gallery-item">
-        <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=600&q=80" alt="Cyber Event">
-        <div class="gallery-overlay"><h4>Cyber Night Arena</h4></div>
-      </div>
-
-      <div class="gallery-item">
-        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=600&q=80" alt="Live Crowds">
-        <div class="gallery-overlay"><h4>Festival Atmosphere</h4></div>
-      </div>
+      <h3>Visual Archive Loading</h3>
+      <p>Exclusive event captures, cyber stage installations, and visual media will be published soon.</p>
+      <div class="placeholder-tag">Under Curation</div>
     </div>
   </section>
 
+  <!-- ================= TEAM ================= -->
   <section id="team">
     <div class="section-title">
       <h4>The Visionaries</h4>
@@ -1225,7 +1442,7 @@
     <div class="team-grid">
       <div class="team-card">
         <div class="team-avatar">
-          <img src="Tahseen Karina.png" alt="Tahseen Karina">
+          <img src="Tahseen Karina.png" alt="Tahseen Karina" loading="lazy">
         </div>
         <h3>Tahseen Karina</h3>
         <h5>Managing Director</h5>
@@ -1234,37 +1451,72 @@
 
       <div class="team-card">
         <div class="team-avatar">
-          <img src="Yeasin Rahman Efty.png" alt="Yeasin Rahman Efty">
+          <img src="Yeasin Rahman Efty.png" alt="Yeasin Rahman Efty" loading="lazy">
         </div>
         <h3>Yeasin Rahman Efty</h3>
-        <h5>Director, Operations & Execution</h5>
+        <h5>Director, Operations &amp; Execution</h5>
         <p>7+ years in event management, creative communication, and entrepreneurship, specializing in leadership, operations, business development, and creative execution.</p>
       </div>
 
       <div class="team-card">
         <div class="team-avatar">
-          <img src="Mowrin Islam.png" alt="Mowrin Islam">
+          <img src="Mowrin Islam.png" alt="Mowrin Islam" loading="lazy">
         </div>
         <h3>Mowrin Islam</h3>
-        <h5>Director, Business Development & Partnerships</h5>
+        <h5>Director, Business Development &amp; Partnerships</h5>
         <p>5+ years in event management, business development, and strategic partnerships, specializing in event strategy, client management, and creative execution.</p>
       </div>
     </div>
   </section>
 
+  <!-- ================= PARTNERS & BRANDS (36 CLIENT LOGOS - BALANCED & READABLE) ================= -->
   <section id="sponsors">
     <div class="section-title">
       <h4>Backed By Visionaries</h4>
-      <h2>Partners & Brands</h2>
+      <h2>Partners &amp; Brands</h2>
     </div>
-    <div class="sponsors-flex">
-      <div class="sponsor-logo">CYBERTECH</div>
-      <div class="sponsor-logo">HYPERWAVE</div>
-      <div class="sponsor-logo">NEXUS AUDIO</div>
-      <div class="sponsor-logo">SYNTH CORP</div>
+
+    <div class="brand-logos-grid">
+      <div class="brand-logo-item"><img src="Clients Logo-01.png" alt="Partner 01" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-02.png" alt="Partner 02" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-03.png" alt="Partner 03" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-04.png" alt="Partner 04" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-05.png" alt="Partner 05" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-06.png" alt="Partner 06" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-07.png" alt="Partner 07" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-08.png" alt="Partner 08" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-09.png" alt="Partner 09" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-10.png" alt="Partner 10" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-11.png" alt="Partner 11" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-12.png" alt="Partner 12" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-13.png" alt="Partner 13" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-14.png" alt="Partner 14" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-15.png" alt="Partner 15" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-16.png" alt="Partner 16" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-17.png" alt="Partner 17" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-18.png" alt="Partner 18" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-19.png" alt="Partner 19" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-20.png" alt="Partner 20" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-21.png" alt="Partner 21" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-22.png" alt="Partner 22" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-23.png" alt="Partner 23" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-24.png" alt="Partner 24" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-25.png" alt="Partner 25" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-26.png" alt="Partner 26" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-27.png" alt="Partner 27" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-28.png" alt="Partner 28" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-29.png" alt="Partner 29" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-30.png" alt="Partner 30" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-31.png" alt="Partner 31" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-32.png" alt="Partner 32" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-33.png" alt="Partner 33" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-34.png" alt="Partner 34" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-35.png" alt="Partner 35" loading="lazy"></div>
+      <div class="brand-logo-item"><img src="Clients Logo-36.png" alt="Partner 36" loading="lazy"></div>
     </div>
   </section>
 
+  <!-- ================= CONTACT ================= -->
   <section id="contact">
     <div class="section-title">
       <h4>Get In Touch</h4>
@@ -1282,28 +1534,40 @@
         <div class="form-group">
           <textarea rows="5" placeholder="Your Message" required></textarea>
         </div>
-        <button type="submit" class="btn-primary">Send Message</button>
+        <button type="submit" class="btn-primary"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
       </form>
 
       <div class="contact-info">
-        <div class="info-item">
-          <div class="info-icon"><i class="fa-solid fa-envelope"></i></div>
+        <!-- 1. WhatsApp Action -->
+        <a href="https://wa.me/18005556366?text=Hi%20NEON%20Communications,%20I'd%20like%20to%20get%20in%20touch." target="_blank" rel="noopener noreferrer" class="info-item">
+          <div class="info-icon whatsapp"><i class="fa-brands fa-whatsapp"></i></div>
           <div class="info-text">
-            <h5>Email</h5>
-            <p>hello@neoncommunication.com</p>
+            <h5>WhatsApp Direct</h5>
+            <p>Chat with us on WhatsApp</p>
           </div>
-        </div>
+        </a>
 
-        <div class="info-item">
-          <div class="info-icon"><i class="fa-solid fa-phone"></i></div>
+        <!-- 2. Phone / Hotline Action -->
+        <a href="tel:+18005556366" class="info-item">
+          <div class="info-icon phone"><i class="fa-solid fa-phone"></i></div>
           <div class="info-text">
-            <h5>Phone</h5>
+            <h5>Hotline (Click to Call)</h5>
             <p>+1 (800) 555-NEON</p>
           </div>
-        </div>
+        </a>
 
-        <div class="info-item">
-          <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
+        <!-- 3. Email Action -->
+        <a href="mailto:hello@neoncommunication.com" class="info-item">
+          <div class="info-icon email"><i class="fa-solid fa-envelope"></i></div>
+          <div class="info-text">
+            <h5>Email Support</h5>
+            <p>hello@neoncommunication.com</p>
+          </div>
+        </a>
+
+        <!-- 4. Location Details -->
+        <div class="info-item" style="cursor: default;">
+          <div class="info-icon location"><i class="fa-solid fa-location-dot"></i></div>
           <div class="info-text">
             <h5>Headquarters</h5>
             <p>Cyber District, Suite 404, CA</p>
@@ -1313,6 +1577,7 @@
     </div>
   </section>
 
+  <!-- ================= FOOTER ================= -->
   <footer>
     <div class="footer-grid">
       <div class="footer-brand">
@@ -1323,18 +1588,19 @@
       <div class="footer-col">
         <h4>Navigation</h4>
         <ul>
-          <li><a href="#about">About</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#about"><i class="fa-solid fa-chevron-right"></i> About</a></li>
+          <li><a href="#services"><i class="fa-solid fa-chevron-right"></i> Services</a></li>
+          <li><a href="#sunset-journey"><i class="fa-solid fa-chevron-right"></i> Sunset Journey</a></li>
+          <li><a href="#gallery"><i class="fa-solid fa-chevron-right"></i> Gallery</a></li>
         </ul>
       </div>
 
       <div class="footer-col">
         <h4>Connect</h4>
         <ul>
-          <li><a href="#team">Team</a></li>
-          <li><a href="#sponsors">Partners</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="#team"><i class="fa-solid fa-chevron-right"></i> Team</a></li>
+          <li><a href="#sponsors"><i class="fa-solid fa-chevron-right"></i> Partners</a></li>
+          <li><a href="#contact"><i class="fa-solid fa-chevron-right"></i> Contact</a></li>
         </ul>
       </div>
     </div>
@@ -1344,10 +1610,13 @@
     </div>
   </footer>
 
+  <!-- ================= SCRIPTS ================= -->
   <script>
-    // 1. Mobile Menu Toggle
+    // 1. Mobile Menu Toggle & Scrollspy Navbar
     const menuBtn = document.getElementById('menu-toggle');
     const navMenu = document.getElementById('nav-menu');
+    const header = document.getElementById('site-header');
+
     if (menuBtn && navMenu) {
       menuBtn.addEventListener('click', () => {
         navMenu.classList.toggle('active');
@@ -1357,7 +1626,34 @@
       });
     }
 
-    // 2. Canvas Particle Animation
+    // Scroll Navbar Effect & Active Link Highlight
+    const sections = document.querySelectorAll('section[id]');
+    window.addEventListener('scroll', () => {
+      const scrollY = window.pageYOffset;
+      if (header) {
+        if (scrollY > 50) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      }
+
+      sections.forEach(current => {
+        const sectionHeight = current.offsetHeight;
+        const sectionTop = current.offsetTop - 120;
+        const sectionId = current.getAttribute('id');
+        const link = document.querySelector(`.nav-links a[href*="${sectionId}"]`);
+        if (link) {
+          if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        }
+      });
+    });
+
+    // 2. Interactive Constellation Canvas Particles
     const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
 
@@ -1369,8 +1665,19 @@
     window.addEventListener('resize', resizeCanvas);
 
     const particles = [];
-    const particleCount = 45;
+    const particleCount = 55;
     const colors = ['#CCFF00', '#00E5FF'];
+    const mouse = { x: null, y: null, maxDist: 140 };
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    window.addEventListener('mouseout', () => {
+      mouse.x = null;
+      mouse.y = null;
+    });
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({
@@ -1378,15 +1685,17 @@
         y: Math.random() * canvas.height,
         radius: Math.random() * 2 + 1,
         color: colors[Math.floor(Math.random() * colors.length)],
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: (Math.random() - 0.5) * 0.6,
         alpha: Math.random() * 0.5 + 0.2
       });
     }
 
     function animateParticles() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
+
+      for (let i = 0; i < particles.length; i++) {
+        let p = particles[i];
         p.x += p.vx;
         p.y += p.vy;
 
@@ -1397,10 +1706,42 @@
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
         ctx.globalAlpha = p.alpha;
-        ctx.shadowBlur = 10;
+        ctx.shadowBlur = 8;
         ctx.shadowColor = p.color;
         ctx.fill();
-      });
+
+        for (let j = i + 1; j < particles.length; j++) {
+          let p2 = particles[j];
+          let dx = p.x - p2.x;
+          let dy = p.y - p2.y;
+          let dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 110) {
+            ctx.beginPath();
+            ctx.strokeStyle = p.color;
+            ctx.globalAlpha = (1 - dist / 110) * 0.15;
+            ctx.lineWidth = 0.7;
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+
+        if (mouse.x !== null && mouse.y !== null) {
+          let mdx = p.x - mouse.x;
+          let mdy = p.y - mouse.y;
+          let mDist = Math.sqrt(mdx * mdx + mdy * mdy);
+          if (mDist < mouse.maxDist) {
+            ctx.beginPath();
+            ctx.strokeStyle = '#00E5FF';
+            ctx.globalAlpha = (1 - mDist / mouse.maxDist) * 0.25;
+            ctx.lineWidth = 0.8;
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.stroke();
+          }
+        }
+      }
       requestAnimationFrame(animateParticles);
     }
     animateParticles();
